@@ -50,7 +50,8 @@ export default class Settings {
   }
 
   static async addDefaultMood(val) {
-    if (val == undefined) return;
+    val = "blank";
+    // if (val == undefined) return;
     let storedMoods = await this.get("defaultMoods");
     storedMoods.push(val);
     Logger.log("Adding defaultMood" + val);
