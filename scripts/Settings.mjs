@@ -203,5 +203,14 @@ export default class Settings {
       type: String,
       default: game.i18n.localize("VINO.SETTINGS.QuoteClosingDefault"),
     });
+
+    game.settings.register(constants.moduleName, "isActive", {
+      name: "Is Module Active",
+      hint: "This disables the part where images show up",
+      scope: "world",
+      config: true,
+      type: Boolean,
+      default: true
+    });
   }
 }

@@ -13,6 +13,11 @@ export default class ChatHandler {
       return;
     }
 
+    if (game.settings.get("vino", "isActive") == false) {
+      Logger.log("The module is disabled, cancelling");
+      return;
+    }
+
     let speakingActor = game.actors.get(message.speaker.actor);
 
     try {
