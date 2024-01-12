@@ -71,7 +71,7 @@
   },
   "url": "https://github.com/Lukasrygh23/vino-lukas",
   "manifest": "https://raw.githubusercontent.com/Lukasrygh23/vino-lukas/main/module.json",
-  "download": "https://github.com/cswendrowski/FoundryVTT-ViNo/releases/download/1.1.1/module.zip",
+  "download": "https://github.com/Lukasrygh23/vino-lukas/archive/refs/tags/v1.1.2.zip",
   "readme": "https://github.com/cswendrowski/FoundryVTT-ViNo/blob/master/README.md",
   "changelog": "https://github.com/cswendrowski/FoundryVTT-ViNo/blob/master//changelog.md",
   "bugs": "https://github.com/cswendrowski/FoundryVTT-ViNo/issues",
