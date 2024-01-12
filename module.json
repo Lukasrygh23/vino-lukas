@@ -67,7 +67,7 @@
   "styles": ["styles/vino.css"],
   "compatibility": {
     "minimum": 11,
-    "verified": 11
+    "verified": 11.315
   },
   "url": "https://github.com/Lukasrygh23/vino-lukas",
   "manifest": "https://raw.githubusercontent.com/Lukasrygh23/vino-lukas/main/module.json",
