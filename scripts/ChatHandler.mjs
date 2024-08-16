@@ -8,8 +8,8 @@ export default class ChatHandler {
   static handleCreateChatMessage(message) {
     Logger.logObject(message);
 
-    if (message.type != 2 && message.type != 3) {
-      Logger.log("Message was not Type 2 (IC) or 3 (Emote), cancelling");
+    if (message.style != 2 && message.style != 3) {
+      Logger.log("Message was not style 2 (IC) or 3 (Emote), cancelling");
       return;
     }
 
@@ -44,7 +44,7 @@ export default class ChatHandler {
       text: text,
       img: img,
       id: message.id,
-      isEmoting: message.type == 3,
+      isEmoting: message.style == 3,
       message: message,
       font: font,
       preferredSide: preferredSide,
@@ -59,7 +59,7 @@ export default class ChatHandler {
     let mood = ChatHandler._getMood(messageText);
     if (mood != "") {
       chatData.content = ChatHandler._removeCommands(messageText, mood);
-      chatData.type = 2;
+      chatData.style = 2;
       setProperty(chatData, "flags.vino.mood", mood);
       ChatMessage.create(chatData);
       Logger.logObject(chatData);
