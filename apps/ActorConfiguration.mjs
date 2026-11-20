@@ -2,12 +2,33 @@ import constants from "../scripts/Constants.mjs";
 import Settings from "../scripts/Settings.mjs";
 import Logger from "../scripts/Logger.mjs";
 
-export default class ActorConfiguration extends FormApplication {
+const usesApplicationV2 = Number.parseInt(game.version, 10) >= 13;
+const ActorConfigurationBase = usesApplicationV2
+  ? foundry.applications.api.HandlebarsApplicationMixin(foundry.applications.api.ApplicationV2)
+  : FormApplication;
+
+export default class ActorConfiguration extends ActorConfigurationBase {
   /* const app = ;
     static app; */
 
+  static DEFAULT_OPTIONS = {
+    id: "vino-actor-configuration",
+    tag: "form",
+    position: { width: 1000, height: 700 },
+    form: {
+      closeOnSubmit: true,
+      handler: async function (event, form, formData) {
+        await this._updateObject(event, formData.object);
+      },
+    },
+  };
+
+  static PARTS = {
+    configuration: { template: `${constants.modulePath}/templates/actor-vino-configuration.html`, root: true },
+  };
+
   static get defaultOptions() {
-    return mergeObject(super.defaultOptions, {
+    return foundry.utils.mergeObject(super.defaultOptions, {
       id: "vino-actor-configuration",
       template: `${constants.modulePath}/templates/actor-vino-configuration.html`,
       popOut: true,
@@ -107,7 +128,32 @@ export default class ActorConfiguration extends FormApplication {
 
     return {
       actor: this.actor,
+      preferredSideLeft: flags.vino.preferredSide === "left",
+      preferredSideRight: flags.vino.preferredSide === "right",
     };
+  }
+
+  async _prepareContext(options) {
+    return this.getData(options);
+  }
+
+  _onRender(context, options) {
+    super._onRender(context, options);
+    this.element.querySelectorAll("img[data-edit]").forEach((image) => {
+      image.addEventListener("click", (event) => this._onEditImage(event));
+    });
+  }
+
+  async _preClose(options) {
+    await super._preClose(options);
+    if (!options.submitted && options.submit !== false && this.form) {
+      try {
+        await this.submit();
+      } catch (error) {
+        ui.notifications.error(error, { console: true });
+        throw error;
+      }
+    }
   }
 
   async _updateObject(event, formData) {
@@ -137,17 +183,21 @@ export default class ActorConfiguration extends FormApplication {
   }
 
   _onEditImage(event) {
-    const attr = event.currentTarget.dataset.edit;
-    const current = getProperty(this.actor, attr);
-    new FilePicker({
+    const image = event.currentTarget;
+    const attr = image.dataset.edit;
+    const current = foundry.utils.getProperty(this.actor, attr);
+    const Picker = usesApplicationV2 ? foundry.applications.apps.FilePicker.implementation : FilePicker;
+    const position = { top: this.position.top + 40, left: this.position.left + 10 };
+    const options = {
       type: "image",
       current: current,
       callback: (path) => {
-        event.currentTarget.src = path;
-        this._onSubmit(event);
+        image.src = path;
+        const submission = usesApplicationV2 ? this.submit() : this._onSubmit(event);
+        submission.catch((error) => ui.notifications.error(error, { console: true }));
       },
-      top: this.position.top + 40,
-      left: this.position.left + 10,
-    }).browse(current);
+      ...(usesApplicationV2 ? { position } : position),
+    };
+    new Picker(options).browse(current).catch((error) => ui.notifications.error(error, { console: true }));
   }
 }

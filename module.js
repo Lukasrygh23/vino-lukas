@@ -1,4 +1,4 @@
-import { gsap, ScrollToPlugin, TextPlugin } from "/scripts/greensock/esm/all.js";
+import { gsap, ScrollToPlugin, TextPlugin } from "./scripts/gsap.mjs";
 import VNOverlay from "./apps/VNOverlay.mjs";
 import ActorConfiguration from "./apps/ActorConfiguration.mjs";
 import Settings from "./scripts/Settings.mjs";
@@ -52,7 +52,7 @@ Hooks.once("ready", async function () {
 Hooks.once("canvasReady", async () => {
   ui.vinoOverlay = new VNOverlay();
 
-  ui.vinoOverlay.render(true);
+  await ui.vinoOverlay.render(true);
   $("#vino-overlay").fadeOut();
 });
 

@@ -1,11 +1,24 @@
 import constants from "../scripts/Constants.mjs";
 
-export default class VNOverlay extends Application {
+const OverlayApplication = Number.parseInt(game.version, 10) >= 13
+  ? foundry.applications.api.HandlebarsApplicationMixin(foundry.applications.api.ApplicationV2)
+  : Application;
+
+export default class VNOverlay extends OverlayApplication {
   /* const app = ;
     static app; */
 
+  static DEFAULT_OPTIONS = {
+    id: "vino-overlay",
+    window: { frame: false, positioned: false },
+  };
+
+  static PARTS = {
+    overlay: { template: `${constants.modulePath}/templates/vino-frame.html`, root: true },
+  };
+
   static get defaultOptions() {
-    return mergeObject(super.defaultOptions, {
+    return foundry.utils.mergeObject(super.defaultOptions, {
       id: "vino-overlay",
       template: `${constants.modulePath}/templates/vino-frame.html`,
       popOut: false,
