@@ -1,7 +1,8 @@
 import Settings from "./Settings.mjs";
 import Logger from "./Logger.mjs";
+import { supportsV13Applications } from "./Compatibility.mjs";
 
-const usesApplicationV2 = Number.parseInt(game.version, 10) >= 13;
+const usesApplicationV2 = supportsV13Applications();
 const SettingsFormBase = usesApplicationV2
   ? foundry.applications.api.HandlebarsApplicationMixin(foundry.applications.api.ApplicationV2)
   : FormApplication;

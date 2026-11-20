@@ -1,4 +1,6 @@
-const usesApplicationV2 = Number.parseInt(game.version, 10) >= 13;
+import { supportsV13Applications } from "./Compatibility.mjs";
+
+const usesApplicationV2 = supportsV13Applications();
 const core = await import(usesApplicationV2
   ? "/scripts/greensock/esm/index.js"
   : "/scripts/greensock/esm/all.js");

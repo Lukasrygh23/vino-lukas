@@ -29,13 +29,14 @@ class V2Picker {
   }
 }
 
-globalThis.game = { version: "13.351" };
+globalThis.game = { view: "game" };
 globalThis.ui = { notifications: { error() {} } };
 globalThis.foundry = {
   utils: {
     mergeObject: (base, options) => ({ ...base, ...options }),
     getProperty: (object, path) => path.split(".").reduce((value, key) => value?.[key], object),
   },
+  appv1: { api: { Application: LegacyFormApplication } },
   applications: {
     api: { ApplicationV2, HandlebarsApplicationMixin: (base) => class extends base {} },
     apps: { FilePicker: { implementation: V2Picker } },
@@ -146,6 +147,7 @@ test("mood write failure restores controls without refreshing", async () => {
 for (const generation of [11, 12]) {
   test(`V${generation} forms retain legacy applications and file picker`, async () => {
     game.version = `${generation}.315`;
+    delete foundry.appv1;
     Object.defineProperty(globalThis, "FormApplication", {
       configurable: true,
       value: LegacyFormApplication,

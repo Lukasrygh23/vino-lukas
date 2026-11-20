@@ -22,10 +22,11 @@ class ApplicationV2 {
 const mergeObject = (base, options) => ({ ...base, ...options });
 
 test("V13 overlay uses the frameless V2 application without accessing V1", async () => {
-  globalThis.game = { version: "13.351" };
+  globalThis.game = { view: "game" };
   globalThis.ui = {};
   globalThis.foundry = {
     utils: { mergeObject },
+    appv1: { api: { Application: LegacyApplication } },
     applications: { api: { ApplicationV2, HandlebarsApplicationMixin: (base) => class extends base {} } },
   };
   Object.defineProperty(globalThis, "Application", {
@@ -48,7 +49,7 @@ test("V13 overlay uses the frameless V2 application without accessing V1", async
 
 for (const generation of [11, 12]) {
   test(`V${generation} overlay retains the legacy non-popout application`, async () => {
-    globalThis.game = { version: `${generation}.315` };
+    globalThis.game = { view: "game" };
     globalThis.ui = {};
     globalThis.foundry = { utils: { mergeObject } };
     Object.defineProperty(globalThis, "Application", {
