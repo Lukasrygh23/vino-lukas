@@ -1,8 +1,9 @@
 import constants from "../scripts/Constants.mjs";
 import Settings from "../scripts/Settings.mjs";
 import Logger from "../scripts/Logger.mjs";
+import { supportsV13Applications } from "../scripts/Compatibility.mjs";
 
-const usesApplicationV2 = Number.parseInt(game.version, 10) >= 13;
+const usesApplicationV2 = supportsV13Applications();
 const ActorConfigurationBase = usesApplicationV2
   ? foundry.applications.api.HandlebarsApplicationMixin(foundry.applications.api.ApplicationV2)
   : FormApplication;

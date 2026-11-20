@@ -1,6 +1,7 @@
 import constants from "../scripts/Constants.mjs";
+import { supportsV13Applications } from "../scripts/Compatibility.mjs";
 
-const OverlayApplication = Number.parseInt(game.version, 10) >= 13
+const OverlayApplication = supportsV13Applications()
   ? foundry.applications.api.HandlebarsApplicationMixin(foundry.applications.api.ApplicationV2)
   : Application;
 
