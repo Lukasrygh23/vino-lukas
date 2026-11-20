@@ -7,18 +7,21 @@ import LayoutHandler from "./scripts/LayoutDrawer.mjs";
 import QueueHandler from "./scripts/QueueHandler.mjs";
 import Logger from "./scripts/Logger.mjs";
 
-Hooks.on("renderActorSheet", function (sheet, html, data) {
-  let configureSheet = html.find(".configure-sheet");
+Hooks.on("getActorSheetHeaderButtons", function (sheet, buttons) {
+  buttons.unshift({
+    label: "ViNo",
+    class: "configure-vino",
+    icon: "fas fa-address-book",
+    onclick: () => new ActorConfiguration(sheet.actor).render(true),
+  });
+});
 
-  if (configureSheet.length == 0) {
-    html.find(".close").before('<a class="configure-vino"><i class="fas fa-address-book"></i>ViNo</a>');
-  } else {
-    configureSheet.before('<a class="configure-vino"><i class="fas fa-address-book"></i>ViNo</a>');
-  }
-
-  html.find(".configure-vino").click((event) => {
-    let configurationApp = new ActorConfiguration(sheet.actor);
-    configurationApp.render(true);
+Hooks.on("getHeaderControlsActorSheetV2", function (sheet, controls) {
+  controls.unshift({
+    action: "configureVino",
+    label: "ViNo",
+    icon: "fas fa-address-book",
+    onClick: () => new ActorConfiguration(sheet.actor).render(true),
   });
 });
 

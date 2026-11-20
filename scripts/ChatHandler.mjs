@@ -60,7 +60,7 @@ export default class ChatHandler {
     if (mood != "") {
       chatData.content = ChatHandler._removeCommands(messageText, mood);
       chatData.style = 2;
-      setProperty(chatData, "flags.vino.mood", mood);
+      foundry.utils.setProperty(chatData, "flags.vino.mood", mood);
       ChatMessage.create(chatData);
       Logger.logObject(chatData);
       Logger.log("Canceling message");
@@ -112,7 +112,7 @@ export default class ChatHandler {
     Logger.log(mood);
 
     if (mood != undefined && mood != "") {
-      let images = actor.flags.vino?.images;
+      let images = actor.flags.vino?.images ?? [];
 
       Logger.logObject(images);
 
@@ -124,7 +124,7 @@ export default class ChatHandler {
         }
         if (!image?.name) continue;
         if (image.name.toLowerCase() == mood.toLowerCase()) {
-          if (image.path != "") return image.path;
+          if (image.path) return image.path;
         }
       }
     }

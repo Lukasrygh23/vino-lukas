@@ -13,7 +13,10 @@ export default class LayoutDrawer {
 
   static async addSpeakingActor(chatDisplayData) {
     if (await Settings.get("restrictVinoToSameScene")) {
-      if (chatDisplayData.message.user.viewedScene != game.user.viewedScene) return;
+      const author = Number.parseInt(game.version, 10) >= 12
+        ? chatDisplayData.message.author
+        : chatDisplayData.message.user;
+      if (author.viewedScene != game.user.viewedScene) return;
     }
 
     var previousLength = QueueHandler.onscreen.length;
